@@ -1,24 +1,31 @@
 package fr.en0ri4n.justdo.runnables;
 
 import fr.en0ri4n.justdo.core.GameCore;
-import fr.en0ri4n.justdo.utils.TaskHelper;
+import fr.en0ri4n.justdo.runnables.utils.BaseRunnable;
 
-public class GameRunnable implements Runnable
+public class GameRunnable extends BaseRunnable
 {
     private GameRunnable()
     {
+        super(20);
+        // Set Game State
+        GameCore.getInstance().setState(GameCore.GameState.IN_GAME);
     }
 
     @Override
-    public void run()
+    protected void runTask()
     {
+
+    }
+
+    @Override
+    protected void onStop()
+    {
+
     }
 
     public static void start()
     {
-        // Set Game State
-        GameCore.getInstance().setState(GameCore.GameState.IN_GAME);
-
-        TaskHelper.startRepeatingTask(new GameRunnable(), 20L);
+        new GameRunnable();
     }
 }

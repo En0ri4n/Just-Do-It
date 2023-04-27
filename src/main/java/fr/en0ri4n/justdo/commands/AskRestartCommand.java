@@ -1,12 +1,11 @@
 package fr.en0ri4n.justdo.commands;
 
-import fr.en0ri4n.justdo.JustDoMain;
+import fr.en0ri4n.justdo.commands.utils.BaseCommand;
 import fr.en0ri4n.justdo.core.GameCore;
-import fr.en0ri4n.justdo.runnables.BaseRunnable;
-import fr.en0ri4n.justdo.utils.TaskHelper;
+import fr.en0ri4n.justdo.runnables.utils.BaseRunnable;
+import fr.en0ri4n.justdo.runnables.utils.TaskHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,7 +15,7 @@ import java.util.UUID;
 
 import static fr.en0ri4n.justdo.utils.Colors.*;
 
-public class AskRestartCommand implements CommandExecutor
+public class AskRestartCommand extends BaseCommand
 {
     private static final AskRestartCommand INSTANCE = new AskRestartCommand();
     private int taskId;
@@ -24,11 +23,12 @@ public class AskRestartCommand implements CommandExecutor
 
     private AskRestartCommand()
     {
+        super("askrestart");
         this.taskId = -1;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    public boolean execute(CommandSender sender, Command command, String label, String[] args)
     {
         if(!(sender instanceof Player player))
             return false;
@@ -38,9 +38,10 @@ public class AskRestartCommand implements CommandExecutor
 
         if(taskId == -1)
         {
-            taskId = TaskHelper.startRepeatingTask(askRestartRunnable = new AskRestartRunnable(), 20L);
+            taskId = (askRestartRunnable = new AskRestartRunnable()).getTaskId();
             GameCore.send(player, green("You asked to restart the game."));
-            GameCore.broadcast(green(player.getName()) + gold(" wants to restart the game. Type /askrestart to agree in the next 10 seconds"));
+            GameCore.broadcast(green(player.getName()) + gold(" wants to restart the game."));
+            GameCore.broadcast(gold("Type /askrestart to agree in the next 10 seconds"));
             askRestartRunnable.agree(player);
         }
         else
@@ -59,36 +60,34 @@ public class AskRestartCommand implements CommandExecutor
     public static class AskRestartRunnable extends BaseRunnable
     {
         private final List<UUID> agreedPlayers = new ArrayList<>();
-        private int time;
 
         private AskRestartRunnable()
         {
-            this.time = 10;
+            super(10, 20);
         }
         
         @Override
-        public void run()
+        public void runTask()
         {
-            if(time == 0)
-            {
-                TaskHelper.cancelTask(AskRestartCommand.getInstance().taskId);
-                GameCore.broadcast(red("The game will not restart."));
-                AskRestartCommand.getInstance().taskId = -1;
-                return;
-            }
-
             if(agreedPlayers.size() >= GameCore.getInstance().getAvailablePlayersCount())
             {
                 GameCore.broadcast(green("The game will restart in 10 seconds."));
-
-                TaskHelper.cancelTask(AskRestartCommand.getInstance().taskId);
                 AskRestartCommand.getInstance().taskId = -1;
 
-                TaskHelper.runTaskAfter(10 * 20, () -> GameCore.getInstance().restartGame());
-                return;
-            }
+                TaskHelper.runTaskLater(() -> GameCore.getInstance().restartGame(), 10 * 20);
 
-            time--;
+                stop();
+            }
+        }
+
+        @Override
+        protected void onStop()
+        {
+            if(is(0))
+            {
+                GameCore.broadcast(red("The game will not restart."));
+                AskRestartCommand.getInstance().taskId = -1;
+            }
         }
 
         public void agree(Player player)
@@ -97,6 +96,7 @@ public class AskRestartCommand implements CommandExecutor
                 return;
 
             agreedPlayers.add(player.getUniqueId());
+
             GameCore.broadcast(green(player.getName()) + gold(" agreed to restart the game. ") + gray("(" + agreedPlayers.size() + "/" + Bukkit.getOnlinePlayers().size() + ")" ));
         }
     }

@@ -2,6 +2,7 @@ package fr.en0ri4n.justdo.config;
 
 import com.mojang.datafixers.util.Pair;
 import fr.en0ri4n.justdo.JustDoMain;
+import fr.en0ri4n.justdo.config.utils.BaseConfig;
 import fr.en0ri4n.justdo.core.GameCore;
 import fr.en0ri4n.justdo.utils.CraftHelper;
 import fr.en0ri4n.justdo.utils.Randomizer;
@@ -12,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.*;
 
-public class GameConfig
+public class GameConfig extends BaseConfig
 {
     private static final GameConfig INSTANCE = new GameConfig();
 
@@ -34,10 +35,10 @@ public class GameConfig
 
     private GameConfig()
     {
-        setup();
+        super(JustDoMain.getInstance(), "blocks_config.yml", false);
     }
 
-    private void setup()
+    public void setup()
     {
         if(PluginConfig.getInstance().areTasksRandom())
         {
@@ -76,12 +77,12 @@ public class GameConfig
         return Pair.of(Pair.of(gameModes, difficulties), objectives);
     }
 
-    @SuppressWarnings({"ConstantConditions"})
-    public void load()
+    @Override
+    protected void loadConfig(FileConfiguration config)
     {
-        JustDoMain.getInstance().saveResource(BLOCKS_CONFIG_NAME, false);
-        JustDoMain.getInstance().saveResource(ITEMS_CONFIG_NAME, false);
-        JustDoMain.getInstance().saveResource(ENTITIES_CONFIG_NAME, false);
+        saveResource(BLOCKS_CONFIG_NAME, false);
+        saveResource(ITEMS_CONFIG_NAME, false);
+        saveResource(ENTITIES_CONFIG_NAME, false);
 
         // Blocks, Items and Entities Config
         FileConfiguration blockConfig = YamlConfiguration.loadConfiguration(new File(JustDoMain.getInstance().getDataFolder(), BLOCKS_CONFIG_NAME));

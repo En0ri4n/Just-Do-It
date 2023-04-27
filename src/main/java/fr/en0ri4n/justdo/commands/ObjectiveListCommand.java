@@ -1,5 +1,6 @@
 package fr.en0ri4n.justdo.commands;
 
+import fr.en0ri4n.justdo.commands.utils.BaseCommand;
 import fr.en0ri4n.justdo.config.GameConfig;
 import fr.en0ri4n.justdo.core.GameCore;
 import fr.en0ri4n.justdo.utils.JDObjectives;
@@ -26,17 +27,20 @@ import java.util.UUID;
 
 import static fr.en0ri4n.justdo.utils.Colors.*;
 
-public class ObjectiveListCommand implements CommandExecutor, Listener
+public class ObjectiveListCommand extends BaseCommand implements Listener
 {
     private static final ObjectiveListCommand INSTANCE = new ObjectiveListCommand();
 
     private final String inventoryTitle = blue("Objectifs");
     private final List<Integer> decorationSlots = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53);
 
-    private ObjectiveListCommand() {}
+    private ObjectiveListCommand()
+    {
+        super("objlist");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    public boolean execute(CommandSender sender, Command command, String label, String[] args)
     {
         if(!(sender instanceof Player player))
             return true;

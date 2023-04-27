@@ -4,6 +4,8 @@ import com.mojang.datafixers.util.Pair;
 import fr.en0ri4n.justdo.config.GameConfig;
 import fr.en0ri4n.justdo.config.PluginConfig;
 import fr.en0ri4n.justdo.runnables.GameRunnable;
+import fr.en0ri4n.justdo.runnables.utils.TaskHelper;
+import fr.en0ri4n.justdo.scoreboard.JDIScoreboard;
 import fr.en0ri4n.justdo.utils.*;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -66,7 +68,7 @@ public class GameCore
 
     public void unload()
     {
-        ScoreboardManager.getInstance().unregisterPlayers();
+        JDIScoreboard.getInstance().unregisterPlayers();
     }
 
     public void startGame()
@@ -80,7 +82,7 @@ public class GameCore
 
         Bukkit.getOnlinePlayers().forEach(p ->
         {
-            ScoreboardManager.getInstance().registerPlayer(p);
+            JDIScoreboard.getInstance().registerPlayer(p);
             broadcastObjectiveTo(p);
             p.setGameMode(org.bukkit.GameMode.SURVIVAL);
             p.setLevel(69);
@@ -99,15 +101,15 @@ public class GameCore
             giveEffects(player, false);
 
             player.getInventory().clear();
-            player.getInventory().addItem(Utils.unbreakable(Material.DIAMOND_SWORD));
-            player.getInventory().addItem(Utils.tool(Material.DIAMOND_PICKAXE, 2, 2));
-            player.getInventory().addItem(Utils.tool(Material.STONE_AXE, 3, 2));
-            player.getInventory().addItem(Utils.unbreakable(Material.GOLDEN_CARROT, 32));
+            player.getInventory().addItem(ItemFactory.create(Material.DIAMOND_SWORD).unbreakable().build());
+            player.getInventory().addItem(ItemFactory.create(Material.DIAMOND_PICKAXE).enchant(Enchantment.DIG_SPEED, 2).enchant(Enchantment.LOOT_BONUS_BLOCKS, 2).build());
+            player.getInventory().addItem(ItemFactory.create(Material.STONE_AXE).enchant(Enchantment.DIG_SPEED, 3).enchant(Enchantment.LOOT_BONUS_BLOCKS, 2).build());
+            player.getInventory().addItem(ItemFactory.create(Material.GOLDEN_CARROT).unbreakable().amount(32).build());
             player.getInventory().addItem(Utils.getPortalPlacer());
             player.getInventory().setItem(8, Utils.getTutorialBook());
 
-            player.getInventory().setChestplate(Utils.enchant(Material.NETHERITE_CHESTPLATE, Enchantment.BINDING_CURSE, 10));
-            player.getInventory().setLeggings(Utils.enchant(Material.LEATHER_LEGGINGS, Enchantment.PROTECTION_ENVIRONMENTAL, 3));
+            player.getInventory().setChestplate(ItemFactory.create(Material.NETHERITE_CHESTPLATE).enchant(Enchantment.BINDING_CURSE, 10).build());
+            player.getInventory().setLeggings(ItemFactory.create(Material.LEATHER_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).build());
         });
     }
 
@@ -120,7 +122,7 @@ public class GameCore
         if(isDeath)
         {
             Pair<PotionEffect, String> deathPenalty = Utils.getRandomDeathPenalty();
-            send(player, red("Death penalties : ") + deathPenalty.getSecond());
+            send(player, red("Death penalty : ") + deathPenalty.getSecond());
             player.addPotionEffect(deathPenalty.getFirst());
         }
     }
@@ -190,7 +192,7 @@ public class GameCore
 
     public void updateScoreboard()
     {
-        ScoreboardManager.getInstance().updateScoreboard(playerScores);
+        JDIScoreboard.getInstance().updateScoreboard();
     }
 
     // Handle Win
@@ -215,7 +217,7 @@ public class GameCore
         if(playerScores.get(player.getUniqueId()) >= GameConfig.getInstance().getObjectivesCount())
         {
             setState(GameState.ENDING);
-            GameCore.broadcast(lightPurple(bold(player.getName())) + darkPurple(" won !"));
+            GameCore.broadcast(bold().lightPurpleColor(player.getName()) + darkPurple(" won !"));
             Bukkit.getOnlinePlayers().forEach(p ->
             {
                 p.playSound(player, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 10F, 1F);
@@ -223,7 +225,9 @@ public class GameCore
                 p.setGameMode(org.bukkit.GameMode.SPECTATOR);
             });
 
-            TaskHelper.runTaskAfter(10 * 20, this::restartGame);
+            TaskHelper.runTaskLater(() -> Bukkit.getOnlinePlayers().forEach(p -> BungeeHelper.teleportPlayerTo(player, "lobby")), 8 * 20);
+
+            TaskHelper.runTaskLater(this::restartGame, 10 * 20);
 
             return;
         }
@@ -316,7 +320,7 @@ public class GameCore
 
     private static String getPrefix()
     {
-        return darkRed(bold("Just")) + red(bold("Do")) + gold(bold("It")) + gray(" >> ");
+        return bold().darkRedColor("Just") + bold().redColor("Do") + bold().goldColor("It") + gray(" » ");
     }
 
     public static void broadcast(String message)

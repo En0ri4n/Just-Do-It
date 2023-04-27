@@ -1,4 +1,4 @@
-package fr.en0ri4n.justdo.handlers;
+package fr.en0ri4n.justdo.listeners;
 
 import fr.en0ri4n.justdo.core.GameCore;
 import org.bukkit.block.Block;
@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
-public class GameHandler implements Listener
+public class GameListener implements Listener
 {
     @EventHandler
     public void onPickUp(EntityPickupItemEvent event)

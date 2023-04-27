@@ -6,9 +6,7 @@ import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_19_R2.inventory.CraftMetaBook;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -30,53 +28,6 @@ public class Utils
             Pair.of(effect(PotionEffectType.DARKNESS, 90 * 20, 5), darkPurple("Un réveil compliqué")),
             Pair.of(effect(PotionEffectType.HUNGER, 60 * 20, 4), yellow("Un jeûne venu de nulle part")),
             Pair.of(effect(PotionEffectType.WEAKNESS, 120 * 20, 3), blue("En avril ne te découvre pas d'un fil")));
-
-    public static ItemStack tool(Material material, int digSpeedLvl, int fortunelvl)
-    {
-        ItemStack itemStack = unbreakable(material);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.addEnchant(Enchantment.DIG_SPEED, digSpeedLvl, true);
-        itemMeta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, fortunelvl, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        itemStack.setItemMeta(itemMeta);
-
-        return itemStack;
-    }
-
-    public static ItemStack setName(ItemStack itemStack, String name)
-    {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(name);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
-
-    public static ItemStack unbreakable(Material material)
-    {
-        ItemStack itemStack = new ItemStack(material);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setUnbreakable(true);
-        itemStack.setItemMeta(itemMeta);
-
-        return itemStack;
-    }
-
-    public static ItemStack unbreakable(Material material, int amount)
-    {
-        ItemStack itemStack = unbreakable(material);
-        itemStack.setAmount(amount);
-        return itemStack;
-    }
-
-    public static ItemStack enchant(Material material, Enchantment enchantment, int level)
-    {
-        ItemStack itemStack = unbreakable(material);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.addEnchant(enchantment, level, true);
-        itemStack.setItemMeta(itemMeta);
-
-        return itemStack;
-    }
 
     public static PotionEffect effect(PotionEffectType effectType, int time, int level)
     {
@@ -106,13 +57,13 @@ public class Utils
                 /top §7§o(page 6)§r
                 """);
 
-        pages.add(green("        Objectives\n") + "\n" + gold(underline("Alias")) + reset(" : ") + gray(italic("/obj\n")) + "\n" + red("Fonction :\n") + "§rPermet de voir la liste de ses objectifs. Seuls les objectifs validés et l'actuel peuvent être vu.§r");
-        pages.add(green("         ObjList\n") + "\n" + gold(underline("Alias")) + reset(" : ") + gray(italic("/ol\n")) + "\n" + red("Fonction :\n") + "§rPermet de voir les objectifs de tous les joueurs à la manière de la commande §aObjectives§r.§r");
-        pages.add(green("         AskPass\n") + "\n" + gold(underline("Alias")) + reset(" : ") + gray(italic("/ap\n")) + "\n" + red("Fonction :\n") + "§rPermet de demander aux autres joueurs de passer son objectif actuel, si tout le monde effectue la commande, l'objectif sera validé automatiquement pour le joueur§r");
-        pages.add(green("        AskRestart\n") + "\n" + gold(underline("Alias")) + reset(" : ") + gray(italic("/ar\n")) + "\n" + red("Fonction :\n") + "§rPermet de demander aux autres joueurs de redémarrer le jeu et le serveur (en cas de bug). Si tout le monde effectue la commande, le serveur et le jeu redémarreront§r");
-        pages.add(green("           Top\n") + "\n" + gold(underline("Alias")) + reset(" : ") + "§oX§r\n" + "\n" + red("Fonction :\n") + "§rPermet de se téléporter au plus haut point de ses coordonnées (e.g. à la surface si le joueur est dans une grotte.§r");
+        pages.add(green("        Objectives\n") + "\n" + underline().goldColor("Alias") + reset().whiteColor(" : ") + italic().grayColor("/obj\n") + "\n" + red("Fonction :\n") + "§rPermet de voir la liste de ses objectifs. Seuls les objectifs validés et l'actuel peuvent être vu.§r");
+        pages.add(green("         ObjList\n") + "\n" + underline().goldColor("Alias") + reset().whiteColor(" : ") + italic().grayColor("/ol\n") + "\n" + red("Fonction :\n") + "§rPermet de voir les objectifs de tous les joueurs à la manière de la commande §aObjectives§r.§r");
+        pages.add(green("         AskPass\n") + "\n" + underline().goldColor("Alias") + reset().whiteColor(" : ") + italic().grayColor("/ap\n") + "\n" + red("Fonction :\n") + "§rPermet de demander aux autres joueurs de passer son objectif actuel, si tout le monde effectue la commande, l'objectif sera validé automatiquement pour le joueur§r");
+        pages.add(green("        AskRestart\n") + "\n" + underline().goldColor("Alias") + reset().whiteColor(" : ") + italic().grayColor("/ar\n") + "\n" + red("Fonction :\n") + "§rPermet de demander aux autres joueurs de redémarrer le jeu et le serveur (en cas de bug). Si tout le monde effectue la commande, le serveur et le jeu redémarreront§r");
+        pages.add(green("           Top\n") + "\n" + underline().goldColor("Alias") + reset().whiteColor(" : ") + "§oX§r\n" + "\n" + red("Fonction :\n") + "§rPermet de se téléporter au plus haut point de ses coordonnées (e.g. à la surface si le joueur est dans une grotte.§r");
 
-        pages.add(darkRed("Additional Informations\n\n") + reset("- All recipes given\n- Smelt time of 3s\n- Death Penalties\n- Nether Portal Egg\n- Any skills just luck"));
+        pages.add(darkRed("Additional Informations\n\n") + reset().whiteColor("- All recipes given\n- Smelt time of 3s\n- Death Penalties\n- Nether Portal Egg\n- Any skills just luck"));
 
         bookMeta.setPages(pages);
         bookStack.setItemMeta(bookMeta);
@@ -127,7 +78,7 @@ public class Utils
         clearSpace(clickedBlock, 3, 4, 1, isFacing(playerFacing, BlockFace.NORTH, BlockFace.SOUTH));
         clickedBlock.getWorld().playSound(clickedBlock, Sound.BLOCK_STONE_BREAK, SoundCategory.AMBIENT, 100F, 1F);
 
-        ConstructionRunnable.start(clickedBlock, steps, loc -> loc.getWorld().playSound(loc, Sound.ENTITY_GHAST_WARN, SoundCategory.AMBIENT, 100F, 1F));
+        ConstructionRunnable.start(clickedBlock, steps, loc -> loc.getWorld().playSound(loc, Sound.ENTITY_GHAST_WARN, SoundCategory.AMBIENT, 10F, 1F));
     }
 
     private static void clearSpace(Location base, int widthSize, int heightSize, int depthSize, boolean isNorthFacing)
@@ -190,11 +141,6 @@ public class Utils
         return steps;
     }
 
-    public static Location getLocationFromChunk(World world, int chunkX, int chunkZ, int x, int y, int z)
-    {
-        return new Location(world, chunkX << 4 | x, y, chunkZ << 4 | z);
-    }
-
     public static Pair<PotionEffect, String> getRandomDeathPenalty()
     {
         return Randomizer.random(DEATH_PENALTIES);
@@ -202,10 +148,9 @@ public class Utils
 
     public static ItemStack getPortalPlacer()
     {
-        ItemStack stack = Utils.enchant(Material.HOGLIN_SPAWN_EGG, Enchantment.ARROW_INFINITE, 10);
-        NBTHelper.set(stack, PORTAL_PLACER_TAG, 1, PersistentDataType.INTEGER);
+        ItemStack stack = ItemFactory.create(Material.HOGLIN_SPAWN_EGG).name(gold("Portal Placer")).enchant(Enchantment.ARROW_INFINITE, 10).build();
+        PersistentDataHelper.ITEMSTACK.addData(stack, PersistentDataType.INTEGER, PORTAL_PLACER_TAG, 1);
 
-        Utils.setName(stack, gold("Portal Placer"));
         return stack;
     }
 

@@ -1,17 +1,12 @@
 package fr.en0ri4n.justdo.config;
 
 import fr.en0ri4n.justdo.JustDoMain;
+import fr.en0ri4n.justdo.config.utils.BaseConfig;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-
-public class PluginConfig
+public class PluginConfig extends BaseConfig
 {
     private static final PluginConfig INSTANCE = new PluginConfig();
-
-    // Config Name and File
-    private static final String CONFIG_NAME = "config.yml";
 
     // Config
     private int minimumPlayers;
@@ -27,13 +22,13 @@ public class PluginConfig
 
     private boolean areTasksRandom;
 
-    private PluginConfig() {}
+    private PluginConfig() {
+        super(JustDoMain.getInstance(), "config.yml", true);
+    }
 
-    public void load()
+    @Override
+    protected void loadConfig(FileConfiguration config)
     {
-        JustDoMain.getInstance().saveResource(CONFIG_NAME, false);
-
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(JustDoMain.getInstance().getDataFolder(), CONFIG_NAME));
         minimumPlayers = config.getInt("minimum_players");
         autoStart = config.getBoolean("auto_start");
 
@@ -47,6 +42,8 @@ public class PluginConfig
         hardRandomRange = config.getIntegerList("hard_random").toArray(new Integer[0]);
 
         areTasksRandom = config.getBoolean("random_tasks");
+
+        GameConfig.getInstance().setup();
     }
 
     public int getMinimumPlayers()

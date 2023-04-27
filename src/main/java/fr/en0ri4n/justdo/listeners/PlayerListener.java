@@ -1,8 +1,9 @@
-package fr.en0ri4n.justdo.handlers;
+package fr.en0ri4n.justdo.listeners;
 
 import fr.en0ri4n.justdo.JustDoMain;
 import fr.en0ri4n.justdo.core.GameCore;
-import fr.en0ri4n.justdo.utils.NBTHelper;
+import fr.en0ri4n.justdo.scoreboard.JDIScoreboard;
+import fr.en0ri4n.justdo.utils.PersistentDataHelper;
 import fr.en0ri4n.justdo.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -19,7 +20,7 @@ import java.util.Objects;
 
 import static fr.en0ri4n.justdo.utils.Colors.*;
 
-public class PlayerHandler implements Listener
+public class PlayerListener implements Listener
 {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
@@ -29,13 +30,14 @@ public class PlayerHandler implements Listener
         if(GameCore.isGame() && GameCore.isPlayer(player))
         {
             event.setJoinMessage(gold(player.getName()) + yellow(" has rejoined !"));
+            JDIScoreboard.getInstance().updateScoreboard();
             return;
         }
 
         if(GameCore.isGame())
         {
             player.setGameMode(GameMode.SPECTATOR);
-            event.setJoinMessage(gray(italic(player.getName() + " wants to spectate the game...")));
+            event.setJoinMessage(italic().grayColor(player.getName() + " wants to spectate the game..."));
             return;
         }
 
@@ -63,7 +65,7 @@ public class PlayerHandler implements Listener
         {
             ItemStack heldItem = event.getItem();
 
-            if(NBTHelper.has(heldItem, Utils.PORTAL_PLACER_TAG, PersistentDataType.INTEGER))
+            if(PersistentDataHelper.ITEMSTACK.hasData(heldItem, PersistentDataType.INTEGER, Utils.PORTAL_PLACER_TAG))
             {
                 Location clickedBlock = Objects.requireNonNull(event.getClickedBlock()).getLocation();
                 Utils.placePortal(clickedBlock, event.getPlayer().getFacing().getOppositeFace());
@@ -82,6 +84,6 @@ public class PlayerHandler implements Listener
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event)
     {
-        event.setFormat(gold("%s") + reset(gray(" ▶ ")) + white("%s"));
+        event.setFormat(gold("%s") + reset().grayColor(" » ") + white("%s"));
     }
 }

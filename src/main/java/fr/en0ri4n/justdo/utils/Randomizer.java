@@ -5,49 +5,64 @@ import java.util.Random;
 
 public class Randomizer
 {
-    private static final Randomizer INSTANCE = new Randomizer();
+    private static final Random random = new Random();
 
-    private final Random random = new Random();
-
-    public Random getRand()
-    {
-        setLocalSeed(random.nextLong());
-        return random;
-    }
-
-    public Random getLocalRand()
-    {
-        return random;
-    }
-
-    public void setLocalSeed(long seed)
-    {
-        random.setSeed(seed);
-    }
-
+    /**
+     * Choose a random integer between the two first values of the array
+     * @param range the array of two integers representing the range
+     * @return a random integer between the two first values of the array
+     */
     public static int randomInt(Integer[] range)
     {
-        return INSTANCE.getRand().nextInt(range[0], range[1]);
+        return random.nextInt(range[0], range[1]);
     }
 
+    /**
+     * Choose a random element from a list
+     * @param list the list to choose from
+     * @return a random element from the list
+     */
     public static <T> T random(List<T> list)
     {
-        return list.get(INSTANCE.getRand().nextInt(list.size()));
+        return list.get(random.nextInt(list.size()));
     }
 
-    public static <T> T random(T[] list)
+    /**
+     * Like {@link #randomInt(Integer[])} but with a list
+     * @param list the list of two integers representing the range
+     * @return a random integer between the two first values of the list
+     */
+    public static Integer randomRange(List<Integer> list)
     {
-        return list[INSTANCE.getRand().nextInt(list.length)];
+        return random.nextInt(list.get(0), list.get(1));
     }
 
-    public static Randomizer setSeed(long seed)
+    /**
+     * Like {@link #random(List)} but with an array
+     * @param array the array to choose from
+     * @return a random element from the array
+     */
+    public static <T> T random(T[] array)
     {
-        INSTANCE.setLocalSeed(seed);
-        return INSTANCE;
+        return array[random.nextInt(array.length)];
     }
 
+    /**
+     * Choose a random integer between the two values
+     * @param min the minimum value
+     * @param max the maximum value
+     * @return a random integer between the two values
+     */
+    public static int random(int min, int max)
+    {
+        return random.nextInt(min, max);
+    }
+
+    /**
+     * Get the random instance used by this class
+     */
     public static Random getRandom()
     {
-        return INSTANCE.getRand();
+        return random;
     }
 }

@@ -1,4 +1,4 @@
-package fr.en0ri4n.justdo.handlers;
+package fr.en0ri4n.justdo.listeners;
 
 import fr.en0ri4n.justdo.core.GameCore;
 import org.bukkit.event.EventHandler;
@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-public class LobbyHandler implements Listener
+public class LobbyListener implements Listener
 {
     @EventHandler
     public void onPickUp(EntityPickupItemEvent event)
