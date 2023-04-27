@@ -1,0 +1,26 @@
+name: Just-Do-It
+version: 1.0.0
+main: fr.en0ri4n.justdo.JustDoMain
+api-version: 1.19
+authors: [ En0ri4n ]
+description: Just Do It
+commands:
+  start:
+    permission: justdo.start
+    description: Start the game
+    aliases: [s]
+  objectives:
+    description: Show your objectives
+    aliases: [obj]
+  askrestart:
+    description: Ask for a restart
+    aliases: [ar]
+  askpass:
+    description: Ask for a pass
+    aliases: [ap]
+  objlist:
+    description: Show the objectives list
+    aliases: [ol]
+  top:
+    description: Teleport on the top of your current location
+

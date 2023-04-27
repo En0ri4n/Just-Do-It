@@ -1,0 +1,85 @@
+killable:
+  easy:
+  - minecraft:cod
+  - minecraft:salmon
+  - minecraft:creeper
+  - minecraft:skeleton
+  - minecraft:spider
+  - minecraft:zombie
+  - minecraft:iron_golem
+  - minecraft:horse
+  - minecraft:pig
+  - minecraft:sheep
+  - minecraft:cow
+  - minecraft:chicken
+  - minecraft:squid
+  medium:
+  - minecraft:wolf
+  - minecraft:snow_golem
+  - minecraft:zombie_villager
+  - minecraft:cave_spider
+  - minecraft:drowned
+  - minecraft:bee
+  - minecraft:cat
+  - minecraft:bat
+  - minecraft:rabbit
+  hard:
+  - minecraft:villager
+  - minecraft:enderman
+  - minecraft:dolphin
+  - minecraft:blaze
+  - minecraft:magma_cube
+  - minecraft:zombified_piglin
+  ultrahard:
+  - minecraft:player
+  - minecraft:ender_dragon
+  - minecraft:skeleton_horse
+  - minecraft:zombie_horse
+  - minecraft:elder_guardian
+  - minecraft:wither_skeleton
+
+# Other Existing Entities
+#
+# 
+# minecraft:evoker
+# minecraft:vex
+# minecraft:vindicator
+# minecraft:illusioner
+# minecraft:stray
+# minecraft:husk
+# minecraft:donkey
+# minecraft:mule
+# minecraft:slime
+# minecraft:ghast
+# 
+# minecraft:silverfish
+# minecraft:wither
+# minecraft:witch
+# minecraft:endermite
+# minecraft:guardian
+# minecraft:shulker
+# minecraft:mooshroom
+# minecraft:ocelot
+# minecraft:polar_bear
+# minecraft:llama
+# minecraft:parrot
+# minecraft:turtle
+# minecraft:phantom
+# minecraft:pufferfish
+# minecraft:tropical_fish
+# minecraft:panda
+# minecraft:pillager
+# minecraft:ravager
+# minecraft:trader_llama
+# minecraft:wandering_trader
+# minecraft:hoglin
+# minecraft:piglin
+# minecraft:strider
+# minecraft:zoglin
+# minecraft:piglin_brute
+# minecraft:axolotl
+# minecraft:glow_squid
+# minecraft:goat
+# minecraft:frog
+# minecraft:warden
+# minecraft:camel

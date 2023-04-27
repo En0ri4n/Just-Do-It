@@ -1,0 +1,49 @@
+#########################################
+#                                       #
+#           Just-Do-It Spigot           #
+#               By En0ri4n              #
+#                                       #
+#########################################
+
+# True if it's a BungeeCord related server
+bungee_server: false
+
+# Fallback server when the game ends (BungeeCord)
+fallback_server: lobby
+
+# Players needed to start the game
+minimum_players: 2
+
+# Auto start when there are enough players
+auto_start: false
+
+# Number of easy tasks
+easy_tasks: 2
+
+# Number of medium tasks
+medium_tasks: 2
+
+# Number of hard tasks
+hard_tasks: 2
+
+# Number of ultrahard tasks
+# ultrahard_tasks: 2 (not yet implemented)
+
+# Set to true to randomize tasks count (parameters above will not be used, random count from range below)
+random_tasks: false
+
+# Range of random easy tasks count
+easy_random:
+  - 1
+  - 3
+
+# Range of random medium tasks count
+medium_random:
+  - 1
+  - 3
+
+# Range of random hard tasks count
+hard_random:
+  - 1
+  - 3
+
